@@ -5,6 +5,8 @@
 
 My Social Media App adalah sebuah aplikasi client(mobile)-server. Challenge ini juga merupakan salah satu aplikasi mobile pertama dan terakhir kamu, jadi kerjakan dengan baik sebagai bekal portofolio kamu. Pada challenge ini, kamu diminta untuk membuat aplikasi client(mobile)-server dengan detail sebagai berikut:
 
+TEMA : FACEBOOK
+
 ### Struktur Folder
 - [ ] server: untuk menyimpan aplikasi server GraphQL kamu 
 - [ ] app: untuk menyimpan aplikasi mobile React Native kamu
