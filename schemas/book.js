@@ -1,5 +1,5 @@
 const { GraphQLError } = require("graphql");
-const books = require('../models/dbBook');
+const books = require("../models/dbBook");
 // [
 //   {
 //     id: 1,
