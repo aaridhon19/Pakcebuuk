@@ -5,10 +5,10 @@ const { signToken } = require("../helpers/jwt");
 const typeDefs = `#graphql
     type User {
         _id: ID
-      name: String!
+      name: String
       username: String
-      email: String!
-      password: String!
+      email: String
+      password: String
       phone: String
       address: Address
       followerDetail: [UserDetail]
@@ -38,7 +38,7 @@ const typeDefs = `#graphql
     }
 
     type Mutation {
-        addUser(name: String!, username:String, email: String, password: String): User
+        register(name: String, username:String, email: String, password: String): User
         login(email: String!, password: String!): Token
     }    
 `;
@@ -81,6 +81,28 @@ const resolvers = {
 
             return token
 
+        } catch (error) {
+            throw error
+        }
+    },
+    register : async (_, args) => {
+        try {
+            const { name, username, email, password } = args;
+            const user =({
+                name,
+                username,
+                email,
+                password
+            })
+            console.log(user, "<<<< Registered User");
+            let result = await User.createOne(user);
+
+            if(!user) {
+                throw new Error("Failed to register user");
+            }
+            user._id = result.insertedId
+
+            return user;
         } catch (error) {
             throw error
         }

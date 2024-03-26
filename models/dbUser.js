@@ -3,13 +3,14 @@ const { database } = require("../config/mongo");
 
 class User {
   static userCollection() {
-    return database.collection("users");
+    return database.collection("Users");
   }
 
   static async findByEmail(email) {
     const user = await this.userCollection().findOne({
       email: email,
     });
+    console.log(user, "<<<");
     return user;
   }
 
@@ -18,6 +19,12 @@ class User {
       _id: new ObjectId(String(id)),
     });
     return user;
+  }
+
+  //Register
+  static async createOne(user){
+    const result = await this.userCollection().insertOne(user);
+    return result
   }
 
   static async getDetailById(id) {
