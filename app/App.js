@@ -3,7 +3,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './navigators/StackNavigator';
 
-export default function App() {
+function App() {
   return (
 
     <NavigationContainer>
@@ -11,3 +11,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+export default App;
