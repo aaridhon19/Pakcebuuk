@@ -23,7 +23,7 @@ const client = new MongoClient(uri, {
 // }
 // run().catch(console.dir);
 
-const database = client.db("Pakcebook");
+const database = client.db("PakdeBukk");
 
 module.exports = {
   database,
