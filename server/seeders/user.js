@@ -1,6 +1,6 @@
 require("dotenv").config();
-const { database } = require("../../config/mongo");
-const { hashPassword } = require("../../helpers/bcrypt");
+const { database } = require("../config/mongo");
+const { hashPassword } = require("../helpers/bcrypt");
 
 const users = [
   {

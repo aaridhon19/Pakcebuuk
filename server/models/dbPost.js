@@ -1,77 +1,122 @@
 const { ObjectId } = require("mongodb");
 const { database } = require("../config/mongo");
+const { redis } = require("../config/redis");
 
 class Post {
   static postCollection() {
     return database.collection("Posts");
   }
 
-  static async getAllPosts() {
-    const posts = await this.postCollection().find({}).toArray();
-    return posts;
-  }
-  static async getPostById(id) {
-    const post = await this.postCollection().findOne({
-      _id: new ObjectId(String(id)),
-    });
-    return post;
-  }
-
-  static async createPost(post) {
-    const result = await this.postCollection().insertOne(post);
-    return result;
-  }
-
-  static async updatePost(id, post) {
-    const result = await this.postCollection().updateOne(
-      {
-        _id: new ObjectId(String(id)),
-      },
-      { $set: post }
-    );
-    return result;
-  }
-
-  static async deletePost(id) {
-    const result = await this.postCollection().deleteOne({
-      _id: new ObjectId(String(id)),
-    });
-    return result;
-  }
-
-  static async likePost(id, username) {
-    const post = await this.getPostById(id);
-    if (!post.likes.includes(username)) {
-      post.likes.push(username);
+  static async findAll() {
+    const redisPosts = await redis.get("Posts");
+    if (redisPosts) {
+      return JSON.parse(redisPosts);
     } else {
-      post.likes = post.likes.filter((like) => like !== username);
+      const agg = [
+        {
+          $sort: {
+            createdAt: -1,
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "authorId",
+            foreignField: "_id",
+            as: "author",
+          },
+        },
+        {
+          $unwind: {
+            path: "$author",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ];
+      const cursor = this.postCollection().aggregate(agg);
+      const result = await cursor.toArray();
+      await redis.set("Posts", JSON.stringify(result));
+      return result;
     }
   }
 
-  static async unlikePost(id, username) {
-    const post = await this.getPostById(id);
-    post.likes = post.likes.filter((like) => like !== username);
-    const result = await this.postCollection().updateOne(
+  static async findById(id) {
+    const agg = [
       {
-        _id: new ObjectId(String(id)),
+        $match: {
+          _id: new ObjectId(String(id)),
+        },
       },
       {
-        $set: { likes: post.likes },
-      }
+        $lookup: {
+          from: "users",
+          localField: "authorId",
+          foreignField: "_id",
+          as: "author",
+        },
+      },
+      {
+        $unwind: {
+          path: "$author",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+    ];
+    const cursor = this.postCollection().aggregate(agg);
+    const result = await cursor.toArray();
+
+    return result;
+  }
+
+  static async createOne(post) {
+    const newPost = await this.postCollection().insertOne(post);
+    await redis.del("posts");
+    return newPost;
+  }
+
+  static async updateOne(id, update, username) {
+    if (update.likes) {
+      const agg = [
+        {
+          $match: {
+            _id: new ObjectId(String(id)),
+          },
+        },
+      ];
+      const cursor = this.postCollection().aggregate(agg);
+      const result = await cursor.toArray();
+      result[0].likes.forEach((item) => {
+        if (item.username === username) {
+          throw new Error("Already liked");
+        }
+      });
+    }
+    const post = await this.postCollection().updateOne(
+      { _id: new ObjectId(String(id)) },
+      { $push: update }
     );
-    return result;
+    if (!post) {
+      throw new Error("Post not found");
+    }
+    const agg = [
+      {
+        $match: {
+          _id: new ObjectId(String(id)),
+        },
+      },
+      {
+        $lookup: {
+          from: "Users",
+          localField: "authorId",
+          foreignField: "_id",
+          as: "author",
+        },
+      },
+    ];
+    const cursor = this.postCollection().aggregate(agg);
+    const result = await cursor.toArray();
+    return result[0];
   }
-
-  static async addComment(id, comment) {
-    const post = await this.getPostById(id);
-    post.comments.push(comment);
-    const result = await this.postCollection().updateOne({
-      _id: new ObjectId(String(id)),
-    });
-
-    return result;
-  }
-  
 }
 
 module.exports = Post;

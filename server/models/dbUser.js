@@ -6,9 +6,9 @@ class User {
     return database.collection("Users");
   }
 
-  static async findByEmail(email) {
+  static async findByUsername(username) {
     const user = await this.userCollection().findOne({
-      email: email,
+      username: username,
     });
     console.log(user, "<<<");
     return user;

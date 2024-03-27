@@ -1,18 +1,25 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
-const {
-  typeDefs: typeDefsBook,
-  resolvers: resolversBook,
-} = require("./schemas/book");
-const {verifyToken} = require("./helpers/jwt");
+
+const { verifyToken } = require("./helpers/jwt");
 const {
   typeDefs: typeDefsUser,
   resolvers: resolversUser,
 } = require("./schemas/user");
 
+const {
+  typeDefs: typeDefsPost,
+  resolvers: resolversPost,
+} = require("./schemas/post");
+
+const {
+  typeDefs: typeDefsFollow,
+  resolvers: resolversFollow,
+} = require("./schemas/follow");
+
 const server = new ApolloServer({
-  typeDefs: [typeDefsBook, typeDefsUser],
-  resolvers: [resolversBook, resolversUser],
+  typeDefs: [typeDefsUser, typeDefsPost, typeDefsFollow],
+  resolvers: [resolversUser, resolversPost, resolversFollow],
   introspection: true,
 });
 (async () => {
@@ -27,9 +34,9 @@ const server = new ApolloServer({
           if (!auth) {
             throw new Error("Invalid Token");
           }
-          const token = auth.split(' ')[1];
-          const decoded = verifyToken(token)
-          return decoded
+          const token = auth.split(" ")[1];
+          const decoded = verifyToken(token);
+          return decoded;
         },
       };
     },
