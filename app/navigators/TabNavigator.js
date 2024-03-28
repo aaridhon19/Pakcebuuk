@@ -73,7 +73,7 @@ function TabNavigator() {
               marginStart: 12,
             }}
           >
-            Pakcebukk
+            pakcebukk
           </Text>
         ),
       }}

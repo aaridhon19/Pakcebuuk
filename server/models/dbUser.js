@@ -14,6 +14,14 @@ class User {
     return user;
   }
 
+  static async findByEmail(email) {
+    const user = await this.userCollection().findOne({
+      email: email
+    });
+    console.log(user, "<<<");
+    return user;
+  }
+
   static async findById(id) {
     const user = await this.userCollection().findOne({
       _id: new ObjectId(String(id)),
