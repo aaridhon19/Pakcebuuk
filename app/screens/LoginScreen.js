@@ -1,29 +1,40 @@
 import { gql, useMutation } from "@apollo/client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { TextInput } from "react-native";
 import { ActivityIndicator } from "react-native";
 import { View, Text } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import * as SecureStore from "expo-secure-store";
+import AuthContext from "../context/auth";
 
 const LOGIN_MUTATION = gql`
-  mutation Mutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
       accessToken
     }
   }
 `;
 
 function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
+  const { setIsSignedIn } = useContext(AuthContext);
+
+  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: async (data) => {
+      await SecureStore.setItemAsync("accessToken", data?.login.accessToken);
+      setIsSignedIn(true);
+    },
+  });
+
+  console.log({ data, loading, error });
 
   async function handleSubmit() {
     try {
-      await login({ variables: { email, password } });
+      await login({ variables: { username, password } });
       navigation.navigate("Home");
     } catch (err) {
       console.log(err.message, "<<<<<< ini login");
@@ -58,9 +69,9 @@ function LoginScreen({ navigation }) {
           <View style={styles.inputGroup}>
             <TextInput
               style={styles.input}
-              onChangeText={setEmail}
-              value={email}
-              placeholder="Email"
+              onChangeText={setUsername}
+              value={username}
+              placeholder="Username"
             />
           </View>
           <View style={styles.inputGroup}>

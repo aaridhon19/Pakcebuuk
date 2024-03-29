@@ -28,6 +28,8 @@ function RegisterScreen({ navigation }) {
 
   const [register, { data, loading, error }] = useMutation(REGISTER_MUTATION);
 
+  console.log({data, loading, error});
+
   async function handleSubmit() {
     try {
       await register({ variables: { name, username, email, password } });
@@ -37,7 +39,7 @@ function RegisterScreen({ navigation }) {
       alert(err.message);
     }
   }
-  
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

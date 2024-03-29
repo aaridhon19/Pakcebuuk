@@ -31,7 +31,7 @@ const typeDefs = `#graphql
 
   type Mutation {
     register(name: String!, username: String!, email: String!, password: String!): User
-    login(email: String!, password: String!): Token
+    login(username: String!, password: String!): Token
   }
 
 `;
@@ -129,17 +129,18 @@ const resolvers = {
 
     login: async (_, args) => {
       try {
-        const { email, password } = args;
-        //validasi email
-        if (!email) {
-          throw new Error("Email is Required");
+        // console.log('masuukkkk');
+        const { username, password } = args;
+        //validasi username
+        if (!username) {
+          throw new Error("Username is Required");
         }
         //validasi password
         if (!password) {
           throw new Error("Password is Required");
         }
 
-        const user = await User.findByEmail(email);
+        const user = await User.findByUsername(username);
         console.log(user, "<<<< ini di schemas user");
 
         if (!user) {
@@ -149,13 +150,13 @@ const resolvers = {
         const isMatch = comparePassword(password, user.password);
 
         if (!isMatch) {
-          throw new Error("Invalid Email or Password");
+          throw new Error("Invalid Username or Password");
         }
 
         const token = {
           accessToken: signToken({
             id: user._id,
-            email: user.email,
+            username: user.username,
           }),
         };
         return token;
