@@ -8,22 +8,16 @@ import { View, Text } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const REGISTER_MUTATION = gql`
-  mutation Register(
-    $name: String!
-    $username: String!
-    $email: String!
-    $password: String!
-  ) {
-    register(
-      name: $name
-      username: $username
-      email: $email
-      password: $password
-    ) {
-      email
-      password
-    }
+  mutation Mutation($name: String!, $username: String!, $email: String!, $password: String!) {
+  register(name: $name, username: $username, email: $email, password: $password) {
+    _id
+    name
+    username
+    email
+    password
   }
+}
+
 `;
 
 function RegisterScreen({ navigation }) {
@@ -39,10 +33,11 @@ function RegisterScreen({ navigation }) {
       await register({ variables: { name, username, email, password } });
       navigation.navigate("Login");
     } catch (err) {
+      console.log(err.message, "<<<<<< ini register");
       alert(err.message);
     }
   }
-
+  
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -70,7 +65,7 @@ function RegisterScreen({ navigation }) {
           <View style={styles.inputGroup}>
             <TextInput
               style={styles.input}
-              onChange={setName}
+              onChangeText={setName}
               value={name}
               placeholder="Name"
             />
@@ -78,7 +73,7 @@ function RegisterScreen({ navigation }) {
           <View style={styles.inputGroup}>
             <TextInput
               style={styles.input}
-              onChange={setUsername}
+              onChangeText={setUsername}
               value={username}
               placeholder="Username"
             />
@@ -86,7 +81,7 @@ function RegisterScreen({ navigation }) {
           <View style={styles.inputGroup}>
             <TextInput
               style={styles.input}
-              onChange={setEmail}
+              onChangeText={setEmail}
               value={email}
               placeholder="Email"
             />
@@ -95,7 +90,7 @@ function RegisterScreen({ navigation }) {
             <TextInput
               style={styles.input}
               placeholder="Password"
-              onChange={setPassword}
+              onChangeText={setPassword}
               value={password}
               secureTextEntry={true}
             />
