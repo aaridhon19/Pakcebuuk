@@ -12,8 +12,14 @@ import { Button } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native";
+import { useState } from "react";
 
 function TabNavigator() {
+  const [showOptions, setShowOptions] = useState(false);
+
+  const handlePlus = () => {
+    setShowOptions(!showOptions);
+  };
   return (
     <Tab.Navigator
       screenOptions={{
@@ -34,9 +40,11 @@ function TabNavigator() {
                 borderRadius: 15,
                 marginHorizontal: 6,
               }}
+              onPress={handlePlus}
             >
               <MaterialCommunityIcons name="plus" color={"#FFF"} size={23} />
             </TouchableOpacity>
+
             <TouchableOpacity
               style={{
                 backgroundColor: "#808080",

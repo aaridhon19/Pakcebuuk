@@ -35,7 +35,6 @@ function LoginScreen({ navigation }) {
   async function handleSubmit() {
     try {
       await login({ variables: { username, password } });
-      navigation.navigate("Home");
     } catch (err) {
       console.log(err.message, "<<<<<< ini login");
       alert(err.message);

@@ -1,7 +1,10 @@
+import { Text, View } from "react-native";
+import LogoutButton from "../components/LogoutButton";
+
 function MenuScreen() {
     return (
-      <View>
-        <Text>MenuScreen</Text>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <LogoutButton />
       </View>
     );
   }
