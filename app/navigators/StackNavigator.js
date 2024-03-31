@@ -9,6 +9,7 @@ const Stack = createNativeStackNavigator();
 import { setContext } from "@apollo/client/link/context";
 import * as SecureStore from "expo-secure-store";
 import AuthContext from "../context/auth";
+import PostScreen from "../screens/PostScreen";
 
 function StackNavigator() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -43,6 +44,7 @@ function StackNavigator() {
               options={{ headerShown: false }}
             />
             <Stack.Screen name="Detail" component={DetailScreen} />
+            <Stack.Screen name="Post" component={PostScreen}options={{ headerShown: false }} />
           </>
         )}
       </Stack.Navigator>

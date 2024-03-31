@@ -70,7 +70,7 @@ class Post {
 
   static async createOne(post) {
     const newPost = await this.postCollection().insertOne(post);
-    await redis.del("posts");
+    await redis.del("Posts");
     return newPost;
   }
 

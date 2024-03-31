@@ -14,15 +14,12 @@ import { View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { useState } from "react";
 
-function TabNavigator() {
-  const [showOptions, setShowOptions] = useState(false);
-
-  const handlePlus = () => {
-    setShowOptions(!showOptions);
-  };
+function TabNavigator({ navigation }) {
+  const [username, setUsername] = useState("null")
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarStyle:{padding:10},
         headerStyle: {
           backgroundColor: "#282828",
         },
@@ -40,7 +37,7 @@ function TabNavigator() {
                 borderRadius: 15,
                 marginHorizontal: 6,
               }}
-              onPress={handlePlus}
+              onPress={() => navigation.navigate("Post")}
             >
               <MaterialCommunityIcons name="plus" color={"#FFF"} size={23} />
             </TouchableOpacity>
@@ -113,6 +110,7 @@ function TabNavigator() {
       <Tab.Screen
         name="ProfileScreen"
         component={ProfileScreen}
+        initialParams={ username } 
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
