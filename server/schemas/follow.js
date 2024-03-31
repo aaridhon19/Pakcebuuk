@@ -22,7 +22,8 @@ const typeDefs = `#graphql
 
 const resolvers = {
   Query: {
-    follows: async () => {
+    follows: async (_, __, {auth}) => {
+      auth()
       const follows = await Follow.findAll();
       return follows;
     },

@@ -1,4 +1,6 @@
 import { Button, FlatList, Image, Text, View, StyleSheet } from "react-native";
+import { useQuery } from "@apollo/client";
+import { GET_PROFILE } from "../queries/profile";
 
 function ProfileScreen({ navigation, route }) {
     const {username, name} = route.params

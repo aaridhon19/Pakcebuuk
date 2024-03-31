@@ -5,9 +5,9 @@ const { signToken } = require("../helpers/jwt");
 const typeDefs = `#graphql
   type User {
     _id: ID
-    name: String!
-    username: String!
-    email: String!
+    name: String
+    username: String
+    email: String
     password: String
     followerDetail: [UserDetail]
     followingDetail: [UserDetail]
@@ -15,9 +15,9 @@ const typeDefs = `#graphql
 
   type UserDetail {
     _id: ID
-    name: String!
-    username: String!
-    email: String!
+    name: String
+    username: String
+    email: String
   }
 
   type Token {
@@ -26,7 +26,7 @@ const typeDefs = `#graphql
 
   type Query {
     findById(_id: ID): User
-    searchByUsername(username: String!): [User],
+    searchByUsernameOrName(username: String, name: String): [User],
   }
 
   type Mutation {
@@ -40,11 +40,11 @@ const resolvers = {
   Query: {
     findById: async (_, args, contextValue) => {
       contextValue.auth();
-      const { id } = args;
+      const { _id } = args;
       if (!_id) {
         throw new Error("User not found");
       }
-      const user = await User.findById(id);
+      const user = await User.findById(_id);
       if (!user) {
         throw new Error("User not found");
       }
@@ -52,15 +52,19 @@ const resolvers = {
       console.log(user, "<<<< ini di schemas user");
       return user;
     },
-    searchByUsername: async (_, args, contextValue) => {
+    searchByUsernameOrName: async (_, args, contextValue) => {
       contextValue.auth();
-      const { username } = args;
+      const { username, name } = args;
 
       if (!username) {
         throw new Error("Username required");
       }
 
-      const user = await User.findByUsername(username);
+      if (!name) {
+        throw new Error("Name required");
+      }
+
+      const user = await User.findByUsernameOrName(username, name);
       if (!user) {
         throw new Error("User not found");
       }
