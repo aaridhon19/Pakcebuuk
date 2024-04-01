@@ -8,18 +8,18 @@ My Social Media App adalah sebuah aplikasi client(mobile)-server. Challenge ini 
 TEMA : FACEBOOK
 
 ### Struktur Folder
-- [ ] server: untuk menyimpan aplikasi server GraphQL kamu 
-- [ ] app: untuk menyimpan aplikasi mobile React Native kamu
+- [X] server: untuk menyimpan aplikasi server GraphQL kamu 
+- [X] app: untuk menyimpan aplikasi mobile React Native kamu
 
 
 ### Fitur
-- [ ] Fitur Register
-- [ ] Fitur Login
-- [ ] FItur Add Post
-- [ ] Fitur Show Post (berdasarkan yang paling baru)
-- [ ] Fitur Comment Post (Embedded Document)
-- [ ] Fitur search user berdasarkan nama atau username
-- [ ] Fitur follow
-- [ ] Menampilkan Followers dan Following dari setiap user (Reference with $lookup)
-- [ ] Fitur Like Post
-- [ ] Menampilkan total like dari setiap post
+- [X] Fitur Register
+- [X] Fitur Login
+- [X] FItur Add Post
+- [X] Fitur Show Post (berdasarkan yang paling baru)
+- [X] Fitur Comment Post (Embedded Document)
+- [X] Fitur search user berdasarkan nama atau username
+- [X] Fitur follow
+- [X] Menampilkan Followers dan Following dari setiap user (Reference with $lookup)
+- [X] Fitur Like Post
+- [X] Menampilkan total like dari setiap post
