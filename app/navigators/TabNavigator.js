@@ -8,18 +8,16 @@ import ProfileScreen from "../screens/ProfileScreen";
 import MarketScreen from "../screens/MarketScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import MenuScreen from "../screens/MenuScreen";
-import { Button } from "react-native";
+import { Button, Modal } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
-import { TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { TouchableOpacity, StyleSheet } from "react-native";
 
 function TabNavigator({ navigation }) {
-  const [username, setUsername] = useState("null")
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarStyle:{padding:10},
+        tabBarStyle: { padding: 10 },
         headerStyle: {
           backgroundColor: "#282828",
         },
@@ -110,7 +108,7 @@ function TabNavigator({ navigation }) {
       <Tab.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        initialParams={ username } 
+        // initialParams={ }
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
@@ -149,5 +147,6 @@ function TabNavigator({ navigation }) {
     </Tab.Navigator>
   );
 }
+
 
 export default TabNavigator;

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_PROFILE = gql`
+export const GET_FOLLOW = gql`
   query Query {
     follows {
       _id

@@ -112,11 +112,12 @@ function PostScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   header: {
-    padding: 10,
-    marginStart: 10,
+    padding: 20,
+    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
+    marginTop: -20,
     padding: 20,
     backgroundColor: "#fff",
   },

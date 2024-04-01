@@ -49,15 +49,15 @@ class User {
           from: "follows",
           localField: "_id",
           foreignField: "followerId",
-          as: "Followings",
+          as: "followingList",
         },
       },
       {
         $lookup: {
           from: "users",
-          localField: "Followings.followingId",
+          localField: "followingList.followingId",
           foreignField: "_id",
-          as: "DataFollowing",
+          as: "following",
         },
       },
       {
@@ -65,22 +65,30 @@ class User {
           from: "follows",
           localField: "_id",
           foreignField: "followingId",
-          as: "Followers",
+          as: "followerList",
         },
       },
       {
         $lookup: {
           from: "users",
-          localField: "Followers.followerId",
+          localField: "followerList.followerId",
           foreignField: "_id",
-          as: "DataFollower",
+          as: "follower",
+        },
+      },
+      {
+        $lookup: {
+          from: "posts",
+          localField: "_id",
+          foreignField: "authorId",
+          as: "posts",
         },
       },
       {
         $project: {
-          "DataFollowing.password": 0,
-          "DataFollower.password": 0,
           password: 0,
+          "following.password": 0,
+          "follower.password": 0,
         },
       },
     ];

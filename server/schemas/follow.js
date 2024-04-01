@@ -16,7 +16,7 @@ const typeDefs = `#graphql
     follows: [Follow]
   }
   type Mutation {
-    followUser(_id: ID!): Follow
+    followUser(followingId: ID!): Follow
   }
 `;
 
@@ -29,21 +29,22 @@ const resolvers = {
     },
   },
   Mutation: {
-    followUser: async (_, { _id }, { auth }) => {
+    followUser: async (_, { followingId }, { auth }) => {
       auth();
       const currentUser = auth();
 
-      const followerId = new ObjectId(String(currentUser.id));
-      const followingId = new ObjectId(String(_id));
+      const FollowerId = new ObjectId(String(currentUser.id));
+      const FollowingId = new ObjectId(String(followingId));
 
       const newFollow = {
-        followingId,
-        followerId,
+        followingId : FollowingId,
+        followerId : FollowerId,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
       const result = await Follow.createFollow(newFollow);
-      newFollow._id = result.insertedId;
+      console.log(result, "<<< mutation follow");
+      // newFollow.followingId = result.insertedId;
       return newFollow;
     },
   },

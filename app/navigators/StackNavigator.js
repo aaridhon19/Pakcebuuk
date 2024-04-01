@@ -10,6 +10,8 @@ import { setContext } from "@apollo/client/link/context";
 import * as SecureStore from "expo-secure-store";
 import AuthContext from "../context/auth";
 import PostScreen from "../screens/PostScreen";
+import SearchScreen from "../screens/SearchScreen";
+import FollowScreen from "../screens/FollowScreen";
 
 function StackNavigator() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -43,8 +45,26 @@ function StackNavigator() {
               component={TabNavigator}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="Detail" component={DetailScreen} />
-            <Stack.Screen name="Post" component={PostScreen}options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Detail"
+              component={DetailScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Post"
+              component={PostScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Search"
+              component={SearchScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+            name="Follow"
+            component={FollowScreen}
+            options={{ headerShown: false }}
+            />
           </>
         )}
       </Stack.Navigator>

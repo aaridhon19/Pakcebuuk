@@ -18,7 +18,7 @@ function HomeScreen() {
   });
 
   console.log({ data, loading, error });
-  console.log({ data });
+  // console.log( data.posts , "Ini data post");
 
   const [refreshing, setRefreshing] = useState(false);
 

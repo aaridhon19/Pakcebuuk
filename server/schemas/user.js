@@ -9,8 +9,6 @@ const typeDefs = `#graphql
     username: String
     email: String
     password: String
-    followerDetail: [UserDetail]
-    followingDetail: [UserDetail]
   }
 
   type UserDetail {
@@ -18,6 +16,9 @@ const typeDefs = `#graphql
     name: String
     username: String
     email: String
+    password: String
+    followerDetail: [User]
+    followingDetail: [User]
   }
 
   type Token {
@@ -25,7 +26,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    findById(_id: ID): User
+    findById(_id: ID): UserDetail
     searchByUsernameOrName(username: String, name: String): [User],
   }
 
@@ -39,12 +40,13 @@ const typeDefs = `#graphql
 const resolvers = {
   Query: {
     findById: async (_, args, contextValue) => {
-      contextValue.auth();
-      const { _id } = args;
-      if (!_id) {
+      const result = contextValue.auth();
+      console.log(result.id, "<<<< result auth");;
+      const id = result.id;
+      if (!id) {
         throw new Error("User not found");
       }
-      const user = await User.findById(_id);
+      const user = await User.findById(id);
       if (!user) {
         throw new Error("User not found");
       }
@@ -55,7 +57,7 @@ const resolvers = {
     searchByUsernameOrName: async (_, args, contextValue) => {
       contextValue.auth();
       const { username, name } = args;
-
+``
       if (!username) {
         throw new Error("Username required");
       }

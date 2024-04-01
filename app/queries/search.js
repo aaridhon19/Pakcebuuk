@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_PROFILE = gql`
+export const GET_SEARCH = gql`
   query Query($name: String, $username: String) {
     searchByUsernameOrName(name: $name, username: $username) {
       _id

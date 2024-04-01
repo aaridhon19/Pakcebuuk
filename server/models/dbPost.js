@@ -50,7 +50,7 @@ class Post {
       {
         $lookup: {
           from: "users",
-          localField: "authorId",
+          localField: "author",
           foreignField: "_id",
           as: "author",
         },

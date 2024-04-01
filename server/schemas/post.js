@@ -1,6 +1,7 @@
 const { GraphQLError } = require("graphql");
 const Post = require("../models/dbPost");
 const { ObjectId } = require("mongodb");
+const { redis } = require("../config/redis");
 
 const typeDefs = `#graphql
   scalar Date
@@ -15,7 +16,7 @@ const typeDefs = `#graphql
     likes: [Like]
     createdAt: Date!
     updatedAt: Date!
-    author: Author
+    author: [Author]
   }
 
   type Comment {
@@ -89,6 +90,12 @@ const resolvers = {
           authorId: new ObjectId(String(currentUser.id)),
           comments: [],
           likes: [],
+          author: [{
+            _id: new ObjectId(String(currentUser.id)),
+            name: currentUser.name,
+            username: currentUser.username,
+            email: currentUser.email
+          }],
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
